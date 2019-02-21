@@ -14,7 +14,7 @@
 <body>
 <div class="jumbotron">
   <div class="container">
-    <h1 class="display-3">Hello, world!</h1>
+    <h1 class="display-3" id="title">Hello, world!</h1>
   </div>
 </div>
 <div class="container" id="content">
@@ -41,7 +41,15 @@
   if (src != undefined) {
     $.get(src, function( data ) {
       var md = new Remarkable();
-      document.getElementById("content").innerHTML = md.render(data);
+      var lines = data.split('\n');
+      var title = lines[0];
+      if(title == null) {
+        title = "Title";
+      }
+      document.title = title;
+      document.getElementById("title").innerHTML = md.render(title);
+      lines.shift();
+      document.getElementById("content").innerHTML = md.render(lines.join('\n'));
     });
   }
 </script>
