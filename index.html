@@ -6,6 +6,7 @@
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="js/remarkable.js"></script>
+  <script src="js/jquery-3.3.1.js"></script>
 
   <title>Hello, world!</title>
 </head>
@@ -17,11 +18,32 @@
   </div>
 </div>
 <div class="container" id="content">
+  <a href="?src=index.md">load markdown from url</a>
 </div>
 
-<script>
-  var md = new Remarkable();
-  document.getElementById("content").innerHTML = md.render('# Remarkable rulezz!');
+<script type="text/javascript">
+  function GetURLParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
+    }
+  }
+
+  var src = GetURLParameter('src');
+  if (src != undefined) {
+    $.get(src, function( data ) {
+      var md = new Remarkable();
+      document.getElementById("content").innerHTML = md.render(data);
+    });
+  }
 </script>
 
 <link rel="stylesheet" href="js/bootstrap.min.js">
